@@ -137,7 +137,7 @@ const Empleos = () => {
                     <SelectValue placeholder="Ubicación" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Todas las ubicaciones</SelectItem>
+                    <SelectItem value="all">Todas las ubicaciones</SelectItem>
                     <SelectItem value="Madrid">Madrid</SelectItem>
                     <SelectItem value="Barcelona">Barcelona</SelectItem>
                     <SelectItem value="Valencia">Valencia</SelectItem>
@@ -151,7 +151,7 @@ const Empleos = () => {
                     <SelectValue placeholder="Tipo de contrato" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Todos los tipos</SelectItem>
+                    <SelectItem value="all">Todos los tipos</SelectItem>
                     <SelectItem value="Tiempo completo">Tiempo completo</SelectItem>
                     <SelectItem value="Media jornada">Media jornada</SelectItem>
                     <SelectItem value="Prácticas">Prácticas</SelectItem>
