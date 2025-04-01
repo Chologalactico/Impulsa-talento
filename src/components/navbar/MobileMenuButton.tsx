@@ -11,6 +11,8 @@ const MobileMenuButton = ({ isOpen, toggleMenu }: MobileMenuButtonProps) => {
     <button
       onClick={toggleMenu}
       className="ml-4 p-2 text-gray-700 hover:text-primary"
+      aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
+      aria-expanded={isOpen}
     >
       {isOpen ? (
         <X className="h-6 w-6" />
