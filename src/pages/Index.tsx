@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
 import { Link } from "react-router-dom";
-import { ChevronRight, Rocket } from "lucide-react";
+import { ChevronRight, Rocket, Star, Award, Briefcase } from "lucide-react";
 
 const Index = () => {
   const [showMore, setShowMore] = useState(false);
@@ -36,12 +36,30 @@ const Index = () => {
             </div>
           </div>
           <div className="bg-secondary flex items-center justify-center p-8">
-            <img 
-              src="/lovable-uploads/b1e7024e-7a46-4379-921c-c139689f35d2.png" 
-              alt="Jóvenes profesionales" 
-              className="max-w-full h-auto rounded-lg shadow-md"
-              style={{ maxHeight: "400px", objectFit: "cover" }} 
-            />
+            <div className="max-w-lg p-8 text-center">
+              <Star className="mx-auto h-14 w-14 text-amber-500 mb-4" />
+              <h2 className="text-2xl font-bold mb-4">¡Construyamos juntos el futuro laboral!</h2>
+              <p className="text-gray-700 mb-6">
+                <span className="font-semibold">Para jóvenes:</span> Da el primer paso hacia tu carrera profesional sin preocuparte por la falta de experiencia.
+              </p>
+              <p className="text-gray-700 mb-6">
+                <span className="font-semibold">Para empresas:</span> Descubra talentos frescos, motivados y listos para crecer con su organización.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4 mt-6">
+                <div className="flex items-center gap-2 text-primary">
+                  <Award className="h-5 w-5" />
+                  <span className="font-medium">Crecimiento mutuo</span>
+                </div>
+                <div className="flex items-center gap-2 text-primary">
+                  <Briefcase className="h-5 w-5" />
+                  <span className="font-medium">Compromiso</span>
+                </div>
+                <div className="flex items-center gap-2 text-primary">
+                  <Star className="h-5 w-5" />
+                  <span className="font-medium">Innovación</span>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
