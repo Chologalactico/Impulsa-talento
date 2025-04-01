@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
+import Login from "./pages/Login";
 import Empleos from "./pages/Empleos";
 import Empresas from "./pages/Empresas";
 import Cursos from "./pages/Cursos";
@@ -18,6 +19,7 @@ const App = () => (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Index />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/empleos" element={<Empleos />} />
         <Route path="/empresas" element={<Empresas />} />
         <Route path="/cursos" element={<Cursos />} />
