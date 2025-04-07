@@ -48,7 +48,10 @@ const Login = () => {
       // Simulación de retardo de red
       await new Promise((resolve) => setTimeout(resolve, 1000));
       
-      // Aquí se integraría la autenticación real
+      // Simulación de login exitoso - guardar estado en localStorage
+      // En una implementación real, esto se manejaría con tokens JWT y/o un contexto de autenticación
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userEmail", values.email);
       
       // Mostrar toast de éxito
       toast({

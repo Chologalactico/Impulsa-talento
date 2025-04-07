@@ -1,6 +1,8 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useToast } from "@/hooks/use-toast";
 
 import NavbarLogo from "./navbar/NavbarLogo";
 import SearchBar from "./navbar/SearchBar";
@@ -11,10 +13,32 @@ import MobileMenuButton from "./navbar/MobileMenuButton";
 
 const Navbar = () => {
   const isMobile = useIsMobile();
+  const { toast } = useToast();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Normalmente esto vendría de un contexto de autenticación
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Verificar estado de login al cargar el componente
+  useEffect(() => {
+    const loginStatus = localStorage.getItem("isLoggedIn") === "true";
+    setIsLoggedIn(loginStatus);
+  }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
+
+  // Función para manejar logout
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userEmail");
+    setIsLoggedIn(false);
+    
+    toast({
+      title: "Sesión cerrada",
+      description: "Has cerrado sesión correctamente"
+    });
+    
+    navigate("/");
+  };
 
   return (
     <header className="bg-secondary border-b border-gray-200 sticky top-0 z-50">
@@ -39,7 +63,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <UserMenu 
               isLoggedIn={isLoggedIn} 
-              setIsLoggedIn={setIsLoggedIn} 
+              setIsLoggedIn={handleLogout} 
               isMobile={isMobile} 
             />
 
