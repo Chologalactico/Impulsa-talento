@@ -103,7 +103,7 @@ const Aplicaciones = () => {
       case "rechazada":
         return <Badge variant="destructive" className="flex items-center gap-1"><AlertCircle className="h-3 w-3" /> Rechazada</Badge>;
       case "aceptada":
-        return <Badge variant="success" className="bg-green-500 flex items-center gap-1"><CheckCircle2 className="h-3 w-3" /> Aceptada</Badge>;
+        return <Badge variant="secondary" className="bg-green-500 text-white flex items-center gap-1"><CheckCircle2 className="h-3 w-3" /> Aceptada</Badge>;
       case "expirada":
         return <Badge variant="outline" className="text-gray-500 flex items-center gap-1"><TimerOff className="h-3 w-3" /> Expirada</Badge>;
       default:

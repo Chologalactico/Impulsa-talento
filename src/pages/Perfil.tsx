@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Pencil, User, Save } from "lucide-react";
+import { Pencil, User, Save, Camera } from "lucide-react";
 import Navbar from "@/components/Navbar";
 
 const Perfil = () => {
@@ -16,6 +16,8 @@ const Perfil = () => {
   const { toast } = useToast();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [profile, setProfile] = useState({
     nombre: "Usuario",
     apellidos: "Ejemplo",
@@ -36,8 +38,26 @@ const Perfil = () => {
     
     setIsLoggedIn(true);
     const userEmail = localStorage.getItem("userEmail");
+    
+    // Cargar datos del perfil del localStorage si existen
+    const savedProfile = localStorage.getItem("userProfile");
+    if (savedProfile) {
+      try {
+        const parsedProfile = JSON.parse(savedProfile);
+        setProfile(prev => ({...prev, ...parsedProfile}));
+      } catch (e) {
+        console.error("Error parsing profile data", e);
+      }
+    }
+    
     if (userEmail) {
       setProfile(prev => ({...prev, email: userEmail}));
+    }
+    
+    // Cargar avatar si existe
+    const savedAvatar = localStorage.getItem("userAvatar");
+    if (savedAvatar) {
+      setAvatarPreview(savedAvatar);
     }
   }, [navigate]);
 
@@ -46,15 +66,37 @@ const Perfil = () => {
     setProfile(prev => ({...prev, [name]: value}));
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    setAvatarFile(file);
+    
+    // Crear una URL para previsualizar la imagen
+    const fileReader = new FileReader();
+    fileReader.onloadend = () => {
+      if (typeof fileReader.result === 'string') {
+        setAvatarPreview(fileReader.result);
+      }
+    };
+    fileReader.readAsDataURL(file);
+  };
+
   const handleSave = () => {
     setIsEditing(false);
+    
+    // Guardar imagen de avatar en localStorage
+    if (avatarPreview) {
+      localStorage.setItem("userAvatar", avatarPreview);
+    }
+    
+    // Guardar datos del perfil en localStorage
+    localStorage.setItem("userProfile", JSON.stringify(profile));
+    
     toast({
       title: "Perfil actualizado",
       description: "Tu información ha sido actualizada correctamente",
     });
-
-    // En una aplicación real, aquí enviaríamos los datos al backend
-    localStorage.setItem("userProfile", JSON.stringify(profile));
   };
 
   if (!isLoggedIn) return null;
@@ -71,12 +113,29 @@ const Perfil = () => {
           <div className="md:col-span-1">
             <Card>
               <CardContent className="pt-6 flex flex-col items-center">
-                <Avatar className="h-32 w-32 mb-4">
-                  <AvatarImage src="" alt={profile.nombre} />
-                  <AvatarFallback className="text-4xl">
-                    <User className="h-16 w-16" />
-                  </AvatarFallback>
-                </Avatar>
+                <div className="relative">
+                  <Avatar className="h-32 w-32 mb-4">
+                    <AvatarImage src={avatarPreview || ""} alt={profile.nombre} />
+                    <AvatarFallback className="text-4xl">
+                      <User className="h-16 w-16" />
+                    </AvatarFallback>
+                  </Avatar>
+                  {isEditing && (
+                    <label 
+                      htmlFor="avatar-upload" 
+                      className="absolute bottom-4 right-0 bg-primary text-white p-2 rounded-full cursor-pointer"
+                    >
+                      <Camera className="h-4 w-4" />
+                      <input 
+                        id="avatar-upload" 
+                        type="file" 
+                        className="hidden" 
+                        accept="image/*"
+                        onChange={handleFileChange}
+                      />
+                    </label>
+                  )}
+                </div>
                 <h2 className="text-xl font-semibold text-center">{profile.nombre} {profile.apellidos}</h2>
                 <p className="text-gray-500 text-center">{profile.profesion}</p>
                 <p className="text-gray-500 text-center mt-1">{profile.ubicacion}</p>
@@ -84,7 +143,7 @@ const Perfil = () => {
                 <Button 
                   variant="outline" 
                   className="mt-4 w-full"
-                  onClick={() => setIsEditing(!isEditing)}
+                  onClick={() => isEditing ? handleSave() : setIsEditing(true)}
                 >
                   {isEditing ? (
                     <span className="flex items-center">
