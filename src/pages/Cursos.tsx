@@ -1,4 +1,4 @@
-
+import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -43,7 +43,7 @@ const coursesData = [
     id: 3,
     title: 'Diseño UX/UI para principiantes',
     category: 'diseno',
-    image: 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dXglMjBkZXNpZ258ZW58MHx8MHx8fDA%3D',
+    image: 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXglMjBkZXNpZ258ZW58MHx8MHx8fDA%3D',
     description: 'Aprende a diseñar experiencias de usuario intuitivas y atractivas.',
     duration: '25 horas',
     level: 'Principiante',
@@ -99,7 +99,13 @@ const coursesData = [
   },
 ];
 
-const Cursos = () => {
+interface CursosProps {
+  defaultTab?: string;
+}
+
+const Cursos = ({ defaultTab = "todos" }: CursosProps) => {
+  const [activeTab, setActiveTab] = useState(defaultTab);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -129,7 +135,7 @@ const Cursos = () => {
           </div>
 
           {/* Tabs de categorías */}
-          <Tabs defaultValue="todos" className="mb-8">
+          <Tabs defaultValue={activeTab} className="mb-8" value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="mb-6">
               <TabsTrigger value="todos">Todos</TabsTrigger>
               <TabsTrigger value="tecnologia">Tecnología</TabsTrigger>

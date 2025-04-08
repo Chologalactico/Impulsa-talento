@@ -44,6 +44,12 @@ const DesktopNav = () => {
             <Link to="/cursos/diseno">Diseño</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
+            <Link to="/cursos/administracion">Administración</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/cursos/habilidades">Habilidades blandas</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link to="/cursos">Ver todos</Link>
           </DropdownMenuItem>
         </DropdownMenuContent>
