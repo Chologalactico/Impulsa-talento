@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
@@ -35,7 +36,7 @@ const coursesData = [
     rating: 4.9,
     students: 2309,
     free: false,
-    price: '49€',
+    price: '220.000 COP',
     isNew: false,
     progress: null,
   },
@@ -50,7 +51,7 @@ const coursesData = [
     rating: 4.6,
     students: 876,
     free: false,
-    price: '39€',
+    price: '175.000 COP',
     isNew: true,
     progress: null,
   },
@@ -79,7 +80,7 @@ const coursesData = [
     rating: 4.8,
     students: 1987,
     free: false,
-    price: '59€',
+    price: '265.000 COP',
     isNew: false,
     progress: 78,
   },
