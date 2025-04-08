@@ -43,7 +43,7 @@ export const coursesData: Course[] = [
     rating: 4.9,
     students: 2309,
     free: false,
-    price: '220.000 COP',
+    price: '$55 USD',
     isNew: false,
     progress: null,
   },
@@ -58,7 +58,7 @@ export const coursesData: Course[] = [
     rating: 4.6,
     students: 876,
     free: false,
-    price: '175.000 COP',
+    price: '$43 USD',
     isNew: true,
     progress: null,
   },
@@ -87,7 +87,7 @@ export const coursesData: Course[] = [
     rating: 4.8,
     students: 1987,
     free: false,
-    price: '265.000 COP',
+    price: '$66 USD',
     isNew: false,
     progress: 78,
   },
@@ -106,4 +106,3 @@ export const coursesData: Course[] = [
     progress: 20,
   },
 ];
-
