@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -22,12 +21,31 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 
+type ConfigType = {
+  notifications: {
+    email: boolean;
+    push: boolean;
+    nuevasOfertas: boolean;
+    estadoAplicaciones: boolean;
+    mensajesNuevos: boolean;
+    boletinSemanal: boolean;
+  };
+  privacy: {
+    perfilPublico: boolean;
+    mostrarContacto: boolean;
+    mostrarExperiencia: boolean;
+    mostrarEducacion: boolean;
+  };
+  language: string;
+  theme: string;
+};
+
 const Configuracion = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   
-  const [config, setConfig] = useState({
+  const [config, setConfig] = useState<ConfigType>({
     notifications: {
       email: true,
       push: true,
@@ -55,7 +73,6 @@ const Configuracion = () => {
     
     setIsLoggedIn(true);
     
-    // Intentar cargar configuración guardada
     const savedConfig = localStorage.getItem("userConfig");
     if (savedConfig) {
       try {
@@ -66,18 +83,30 @@ const Configuracion = () => {
     }
   }, [navigate]);
 
-  const handleToggleChange = (category: keyof typeof config, setting: string, value: boolean) => {
-    setConfig(prev => ({
-      ...prev,
-      [category]: {
-        ...prev[category as keyof typeof prev],
-        [setting]: value
+  const handleToggleChange = (category: 'notifications' | 'privacy', setting: string, value: boolean) => {
+    setConfig(prev => {
+      if (category === 'notifications') {
+        return {
+          ...prev,
+          notifications: {
+            ...prev.notifications,
+            [setting]: value
+          }
+        };
+      } else if (category === 'privacy') {
+        return {
+          ...prev,
+          privacy: {
+            ...prev.privacy,
+            [setting]: value
+          }
+        };
       }
-    }));
+      return prev;
+    });
   };
   
   const handleSave = (section: string) => {
-    // En una aplicación real, aquí enviaríamos los datos al backend
     localStorage.setItem("userConfig", JSON.stringify(config));
     
     toast({
