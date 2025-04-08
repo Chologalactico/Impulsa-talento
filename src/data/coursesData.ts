@@ -106,3 +106,4 @@ export const coursesData: Course[] = [
     progress: 20,
   },
 ];
+
