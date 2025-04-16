@@ -1,18 +1,23 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-// Las URL y claves de Supabase se generan automáticamente al crear un proyecto en Supabase
-// Proporcionar valores predeterminados para desarrollo local
-// En producción, debes establecer estas variables de entorno en tu plataforma de despliegue
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://your-supabase-project.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'your-anon-key';
+// Asegurarse de que las variables de entorno estén definidas
+// Los valores deben provenir de tu proyecto de Supabase
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-// Advertencia si faltan las variables de entorno
-if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
-  console.warn('Supabase URL y clave anónima son necesarias para la funcionalidad completa. Por favor configura las variables de entorno VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY en tu archivo .env.local');
+// Verificar si las variables de entorno están configuradas
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('Supabase URL y clave anónima no configuradas. La autenticación no funcionará.');
+  console.info('Por favor configura las variables de entorno VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY en tu archivo .env.local');
+  console.info('Puedes encontrar estos valores en la sección API de tu proyecto de Supabase.');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Crear cliente de Supabase con URL y clave válida
+export const supabase = createClient(
+  supabaseUrl || '',
+  supabaseAnonKey || ''
+);
 
 // Tipos para los usuarios
 export type UserCredentials = {

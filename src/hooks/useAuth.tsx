@@ -39,6 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // Configurar listener para cambios de autenticación
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log("Evento de autenticación:", event);
       setUser(session?.user ?? null);
       setIsLoggedIn(!!session?.user);
       setLoading(false);
@@ -63,6 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         description: "Bienvenido/a a Impulsa Talento",
       });
     } catch (error: any) {
+      console.error("Error de inicio de sesión:", error);
       toast({
         title: "Error de inicio de sesión",
         description: error.message || "Las credenciales ingresadas son incorrectas",
@@ -77,6 +79,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = async (userData: UserRegistration) => {
     try {
       setLoading(true);
+      console.log("Intentando registrar usuario:", userData);
       
       // Registrar usuario con email y password
       const { data, error } = await supabase.auth.signUp({
@@ -92,11 +95,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (error) {
+        console.error("Error de Supabase:", error);
         throw error;
       }
 
       // Si el registro es exitoso, creamos un perfil para el usuario
       if (data.user) {
+        console.log("Usuario creado exitosamente:", data.user.id);
         const { error: profileError } = await supabase
           .from('perfiles')
           .insert([
@@ -120,6 +125,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         description: "Se ha registrado correctamente en Impulsa Talento",
       });
     } catch (error: any) {
+      console.error("Error completo:", error);
       toast({
         title: "Error en el registro",
         description: error.message || "Ha ocurrido un error al registrar su cuenta",
@@ -145,6 +151,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         description: "Has cerrado sesión correctamente",
       });
     } catch (error: any) {
+      console.error("Error al cerrar sesión:", error);
       toast({
         title: "Error al cerrar sesión",
         description: error.message || "Ha ocurrido un error al cerrar sesión",
