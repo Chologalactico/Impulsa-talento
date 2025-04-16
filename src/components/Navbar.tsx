@@ -10,35 +10,16 @@ import DesktopNav from "./navbar/DesktopNav";
 import MobileNav from "./navbar/MobileNav";
 import UserMenu from "./navbar/UserMenu";
 import MobileMenuButton from "./navbar/MobileMenuButton";
+import { useAuth } from "@/hooks/useAuth";
 
 const Navbar = () => {
   const isMobile = useIsMobile();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  // Verificar estado de login al cargar el componente
-  useEffect(() => {
-    const loginStatus = localStorage.getItem("isLoggedIn") === "true";
-    setIsLoggedIn(loginStatus);
-  }, []);
+  const { isLoggedIn, signOut } = useAuth();
 
   const toggleMenu = () => setIsOpen(!isOpen);
-
-  // Función para manejar logout
-  const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("userEmail");
-    setIsLoggedIn(false);
-    
-    toast({
-      title: "Sesión cerrada",
-      description: "Has cerrado sesión correctamente"
-    });
-    
-    navigate("/");
-  };
 
   return (
     <header className="bg-secondary border-b border-gray-200 sticky top-0 z-50">
@@ -61,11 +42,7 @@ const Navbar = () => {
 
           {/* User menu and mobile menu button */}
           <div className="flex items-center">
-            <UserMenu 
-              isLoggedIn={isLoggedIn} 
-              setIsLoggedIn={handleLogout} 
-              isMobile={isMobile} 
-            />
+            <UserMenu isMobile={isMobile} />
 
             {isMobile && (
               <MobileMenuButton 
