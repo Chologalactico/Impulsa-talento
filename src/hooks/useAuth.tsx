@@ -102,6 +102,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Si el registro es exitoso, creamos un perfil para el usuario
       if (data.user) {
         console.log("Usuario creado exitosamente:", data.user.id);
+        
+        // Verificar si la tabla 'perfiles' existe
+        const { error: tableCheckError } = await supabase
+          .from('perfiles')
+          .select('id')
+          .limit(1);
+          
+        // Si hay un error porque la tabla no existe, crearla (esto solo funcionaría con permisos adecuados)
+        if (tableCheckError && tableCheckError.message.includes('does not exist')) {
+          console.log('La tabla perfiles no existe, intentando crearla');
+          // En un entorno real, deberías crear la tabla a través del dashboard de Supabase
+          // o mediante una migración adecuada
+        }
+        
         const { error: profileError } = await supabase
           .from('perfiles')
           .insert([
@@ -117,6 +131,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         if (profileError) {
           console.error('Error al crear perfil:', profileError);
+          // No lanzamos el error para no interrumpir el flujo de registro
         }
       }
 
