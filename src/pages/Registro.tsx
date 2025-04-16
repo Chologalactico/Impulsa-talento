@@ -4,16 +4,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
-import { UserPlus, Mail, Lock, User, Building } from "lucide-react";
+import { UserPlus, Mail, Lock, User } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useAuth } from "@/hooks/useAuth";
 
 // Esquema de validación
 const formSchema = z.object({
@@ -33,10 +33,10 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const Registro = () => {
-  const { toast } = useToast();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [showTermsDialog, setShowTermsDialog] = useState(false);
+  const { signUp } = useAuth();
 
   // Inicializar el formulario con react-hook-form
   const form = useForm<FormValues>({
@@ -59,37 +59,28 @@ const Registro = () => {
     try {
       // Verificar que las contraseñas coincidan
       if (values.password !== values.confirmPassword) {
-        toast({
-          title: "Error en el registro",
-          description: "Las contraseñas no coinciden",
-          variant: "destructive",
+        form.setError('confirmPassword', { 
+          type: 'manual', 
+          message: 'Las contraseñas no coinciden' 
         });
         setIsLoading(false);
         return;
       }
-      
-      console.log("Registrando usuario:", values);
-      
-      // Simulación de retardo de red
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      // Aquí se integraría la autenticación real
-      
-      // Mostrar toast de éxito
-      toast({
-        title: "Registro exitoso",
-        description: "Se ha registrado correctamente en Impulsa Talento",
+
+      // Registrar al usuario con Supabase
+      await signUp({
+        nombre: values.nombre,
+        apellido: values.apellido,
+        email: values.email,
+        password: values.password,
+        tipoUsuario: values.tipoUsuario,
       });
       
       // Redirigir al usuario a la página de login
       navigate("/login");
     } catch (error) {
-      // Mostrar toast de error
-      toast({
-        title: "Error en el registro",
-        description: "Ha ocurrido un error al registrar su cuenta",
-        variant: "destructive",
-      });
+      // El manejo de errores ya se realiza en el hook useAuth
+      console.error("Error durante el registro:", error);
     } finally {
       setIsLoading(false);
     }

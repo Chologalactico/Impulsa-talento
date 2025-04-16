@@ -8,21 +8,24 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/hooks/useAuth";
 
 interface UserMenuProps {
-  isLoggedIn: boolean;
-  setIsLoggedIn: (isLoggedIn: boolean) => void;
   isMobile: boolean;
 }
 
-const UserMenu = ({ isLoggedIn, setIsLoggedIn, isMobile }: UserMenuProps) => {
+const UserMenu = ({ isMobile }: UserMenuProps) => {
+  const { isLoggedIn, signOut, user } = useAuth();
+
   if (isLoggedIn) {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button className="flex items-center text-gray-700 hover:text-primary">
             <User className="h-5 w-5 mr-1" />
-            <span className={isMobile ? "sr-only" : ""}>Usuario</span>
+            <span className={isMobile ? "sr-only" : ""}>
+              {user?.user_metadata?.nombre || "Usuario"}
+            </span>
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
@@ -37,7 +40,7 @@ const UserMenu = ({ isLoggedIn, setIsLoggedIn, isMobile }: UserMenuProps) => {
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <button 
-              onClick={() => setIsLoggedIn(false)}
+              onClick={() => signOut()}
               className="w-full text-left"
             >
               Cerrar Sesión
