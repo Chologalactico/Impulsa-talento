@@ -5,11 +5,11 @@ const NavbarLogo = () => {
   return (
     <Link to="/" className="flex items-center justify-center">
       <img 
-        src="/lovable-uploads/ad7d1011-26d6-4904-b816-c2cb57e22645.png" 
+        src="/lovable-uploads/cbb5d6e9-89ce-4b45-9fcf-a6fba18af188.png" 
         alt="Impulsa Talento Logo" 
-        className="h-10 w-10 object-contain" 
+        className="h-16 w-16 object-contain" 
       />
-      <span className="font-semibold text-lg ml-2">Impulsa Talento</span>
+      <span className="font-bold text-xl ml-3">Impulsa Talento</span>
     </Link>
   );
 };
