@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { toast } from "sonner";
-import { Star, Award, HandShake, Check } from "lucide-react";
+import { Star, Award, Handshake, Check } from "lucide-react";
 
 const formSchema = z.object({
   email: z.string().email("Por favor ingresa un correo válido"),
@@ -48,7 +47,7 @@ const WhyChooseUs = () => {
           </Card>
           
           <Card className="p-6 hover:shadow-lg transition-shadow">
-            <HandShake className="h-12 w-12 text-primary mb-4" />
+            <Handshake className="h-12 w-12 text-primary mb-4" />
             <h3 className="text-xl font-semibold mb-2">Red Empresarial</h3>
             <p className="text-gray-600">Alianzas estratégicas con más de 100 empresas en diversos sectores.</p>
           </Card>
