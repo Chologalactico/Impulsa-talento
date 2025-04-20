@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import {
   Home,
@@ -6,7 +7,6 @@ import {
   Mail,
   Bell,
   Building,
-  Linkedin,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -86,16 +86,6 @@ const DesktopNav = () => {
         <Bell className="h-5 w-5 mr-1" />
         <span>Notificaciones</span>
       </Link>
-
-      <a
-        href="https://www.linkedin.com/in/impulsa-talento-09602b361?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center text-gray-700 hover:text-[#0A66C2] px-2 py-1"
-      >
-        <Linkedin className="h-5 w-5 mr-1" />
-        <span>Síguenos</span>
-      </a>
     </nav>
   );
 };
