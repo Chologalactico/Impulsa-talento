@@ -1,6 +1,13 @@
-
 import { Link } from "react-router-dom";
-import { Home, BookOpen, Briefcase, Building, Mail, Bell } from "lucide-react";
+import { 
+  Home, 
+  BookOpen, 
+  Briefcase, 
+  Building, 
+  Mail, 
+  Bell,
+  Linkedin 
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SearchBar from "./SearchBar";
 
@@ -66,6 +73,17 @@ const MobileNav = ({ isLoggedIn, setIsOpen }: MobileNavProps) => {
           <span>Notificaciones</span>
         </Link>
       </nav>
+
+      <a
+        href="https://www.linkedin.com/in/impulsa-talento-09602b361?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center text-gray-700 hover:text-[#0A66C2] px-3 py-2 rounded-md hover:bg-gray-100"
+        onClick={() => setIsOpen(false)}
+      >
+        <Linkedin className="h-5 w-5 mr-3" />
+        <span>Síguenos</span>
+      </a>
 
       {!isLoggedIn && (
         <div className="mt-4 grid grid-cols-2 gap-2">
