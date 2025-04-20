@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
 import { Link } from "react-router-dom";
 import { ChevronRight, Rocket, Star, Award, Briefcase } from "lucide-react";
+import WhyChooseUs from "@/components/WhyChooseUs";
 
 const Index = () => {
   const [showMore, setShowMore] = useState(false);
@@ -101,6 +102,9 @@ const Index = () => {
           </div>
         </section>
 
+        {/* Why Choose Us section */}
+        <WhyChooseUs />
+
         {/* Companies section */}
         <section className="bg-secondary py-16 px-4">
           <div className="container mx-auto">
@@ -140,7 +144,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Testimonials or Success Stories - can be expanded with actual data */}
+        {/* Testimonials section */}
         <section className="bg-white py-16 px-4">
           <div className="container mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12">Historias de éxito</h2>
@@ -216,6 +220,7 @@ const Index = () => {
         </section>
       </main>
 
+      {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
