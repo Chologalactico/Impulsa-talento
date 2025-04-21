@@ -38,15 +38,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     getCurrentUser();
 
     // Configurar listener para cambios de autenticación
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+    const authListener = supabase.auth.onAuthStateChange((event, session) => {
       console.log("Evento de autenticación:", event);
       setUser(session?.user ?? null);
       setIsLoggedIn(!!session?.user);
       setLoading(false);
     });
 
+    // Utilizamos el objeto retornado de manera segura sin depender de su estructura exacta
     return () => {
-      authListener.subscription.unsubscribe();
+      // Verificamos si tiene el método unsubscribe y lo llamamos
+      if ('subscription' in authListener) {
+        authListener.subscription.unsubscribe();
+      }
     };
   }, []);
 
