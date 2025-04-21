@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Rocket, Star } from "lucide-react";
+import { Rocket, Star, Award, Briefcase } from "lucide-react";
 
 const HeroSection = () => {
   return (
