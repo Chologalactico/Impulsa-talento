@@ -1,6 +1,6 @@
 
 import { useState, useEffect, createContext, useContext } from 'react';
-import { supabase, UserCredentials, UserRegistration } from '@/lib/supabase';
+import { supabase, UserCredentials, UserRegistration, simulateSessionStorage } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
 
 interface AuthContextProps {
@@ -53,10 +53,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signIn = async (credentials: UserCredentials) => {
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signInWithPassword(credentials);
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: credentials.email, 
+        password: credentials.password
+      });
       
       if (error) {
         throw error;
+      }
+      
+      // Si estamos en modo simulado, necesitamos guardar manualmente la sesión
+      if (data && data.user) {
+        simulateSessionStorage(data.user);
       }
       
       toast({
@@ -99,40 +107,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw error;
       }
 
-      // Si el registro es exitoso, creamos un perfil para el usuario
-      if (data.user) {
+      // Si el registro es exitoso y estamos en modo simulado, guardar la sesión
+      if (data && data.user) {
         console.log("Usuario creado exitosamente:", data.user.id);
+        simulateSessionStorage(data.user);
         
-        // Verificar si la tabla 'perfiles' existe
-        const { error: tableCheckError } = await supabase
-          .from('perfiles')
-          .select('id')
-          .limit(1);
-          
-        // Si hay un error porque la tabla no existe, crearla (esto solo funcionaría con permisos adecuados)
-        if (tableCheckError && tableCheckError.message.includes('does not exist')) {
-          console.log('La tabla perfiles no existe, intentando crearla');
-          // En un entorno real, deberías crear la tabla a través del dashboard de Supabase
-          // o mediante una migración adecuada
-        }
-        
-        const { error: profileError } = await supabase
-          .from('perfiles')
-          .insert([
-            {
-              id: data.user.id,
-              nombre: userData.nombre,
-              apellido: userData.apellido,
-              email: userData.email,
-              tipo_usuario: userData.tipoUsuario,
-              created_at: new Date(),
-            },
-          ]);
-
-        if (profileError) {
-          console.error('Error al crear perfil:', profileError);
-          // No lanzamos el error para no interrumpir el flujo de registro
-        }
+        // Simular creación de perfil
+        await updateUserProfile(data.user.id, {
+          nombre: userData.nombre,
+          apellido: userData.apellido,
+          email: userData.email,
+          tipo_usuario: userData.tipoUsuario,
+          created_at: new Date(),
+        });
       }
 
       toast({
@@ -174,6 +161,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Función auxiliar para actualizar el perfil
+  const updateUserProfile = async (userId: string, userData: any) => {
+    try {
+      const { error } = await supabase
+        .from('perfiles')
+        .upsert({ 
+          id: userId,
+          ...userData,
+          updated_at: new Date()
+        });
+      
+      if (error) throw error;
+      return true;
+    } catch (error) {
+      console.error('Error al actualizar perfil:', error);
+      return false;
     }
   };
 
